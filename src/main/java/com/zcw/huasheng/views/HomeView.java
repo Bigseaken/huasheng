@@ -43,4 +43,9 @@ public class HomeView extends AbstractView{
     public JSONObject getSponsor(){
         return getResult(goodsInfoDao.getSponsor());
     }
+
+    @GetMapping("getGoodById")
+    public JSONObject getGoodById(Long id){
+        return getResult(goodsInfoDao.getGoodById(id));
+    }
 }

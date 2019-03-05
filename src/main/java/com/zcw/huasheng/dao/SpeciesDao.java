@@ -15,7 +15,7 @@ import java.util.List;
 @Mapper
 public interface SpeciesDao {
 
-    @Select("SELECT name,id from species GROUP BY name")
+    @Select("SELECT name,id ,type from species GROUP BY name")
     List<JSONObject> getKind();
 
     @Select("SELECT * from species")

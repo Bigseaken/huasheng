@@ -30,4 +30,6 @@ public interface GoodsInfoDao {
 
     @Select("SELECT * from banner where type=2 LIMIT 1")
     JSONObject getSponsor();
+    @Select("SELECT * from goods_info where id = #{id}")
+    JSONObject getGoodById(@Param("id")Long id);
 }
