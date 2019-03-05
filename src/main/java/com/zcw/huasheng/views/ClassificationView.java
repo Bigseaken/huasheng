@@ -2,6 +2,8 @@ package com.zcw.huasheng.views;
 
 import com.alibaba.fastjson.JSONObject;
 import com.zcw.huasheng.dao.SpeciesDao;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +19,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("class")
+@Api("分类")
 public class ClassificationView extends AbstractView {
 
     @Autowired
     SpeciesDao speciesDao;
 
+    @ApiOperation("获取分类商品")
     @GetMapping("getSpecies")
     public JSONObject getSpecies(){
         JSONObject jsonObject = new JSONObject();
