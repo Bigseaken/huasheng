@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("class")
-@Api("分类")
+@Api(description="分类")
 public class ClassificationView extends AbstractView {
 
     @Autowired

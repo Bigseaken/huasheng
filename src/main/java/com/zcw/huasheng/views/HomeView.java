@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @RequestMapping("home")
-@Api("首页相关")
+@Api(description="首页相关")
 public class HomeView extends AbstractView {
     @Autowired
     GoodsInfoDao goodsInfoDao;

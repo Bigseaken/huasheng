@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @CrossOrigin
 @RestController
 @RequestMapping("me")
-@Api("我的")
+@Api(description="我的")
 public class MeView extends AbstractView {
 
     @Autowired
