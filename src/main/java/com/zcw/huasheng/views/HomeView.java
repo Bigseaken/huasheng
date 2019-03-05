@@ -3,10 +3,7 @@ package com.zcw.huasheng.views;
 import com.alibaba.fastjson.JSONObject;
 import com.zcw.huasheng.dao.GoodsInfoDao;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 描述:
@@ -17,35 +14,49 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @CrossOrigin
 @RequestMapping("home")
-public class HomeView extends AbstractView{
+public class HomeView extends AbstractView {
     @Autowired
     GoodsInfoDao goodsInfoDao;
 
     @GetMapping("getBanner")
-    public JSONObject getBanner(){
+    public JSONObject getBanner() {
         return getResult(goodsInfoDao.getBanner());
     }
 
     @GetMapping("getInformationById")
-    public JSONObject getInformationById(Long id){
+    public JSONObject getInformationById(Long id) {
         return getResult(goodsInfoDao.getInformationById(id));
     }
+
     @GetMapping("getHotGoods")
-    public JSONObject getHotGoods(){
+    public JSONObject getHotGoods() {
         return getResult(goodsInfoDao.getHotGoods());
     }
 
     @GetMapping("getChoice")
-    public JSONObject getChoice(){
+    public JSONObject getChoice() {
         return getResult(goodsInfoDao.getChoice());
     }
+
     @GetMapping("getSponsor")
-    public JSONObject getSponsor(){
+    public JSONObject getSponsor() {
         return getResult(goodsInfoDao.getSponsor());
     }
 
     @GetMapping("getGoodById")
-    public JSONObject getGoodById(Long id){
+    public JSONObject getGoodById(Long id) {
         return getResult(goodsInfoDao.getGoodById(id));
+    }
+
+    @PostMapping("addCar")
+     public JSONObject addCar(@RequestBody JSONObject good){
+        String[] params = new String[]{"goodId","amount","sessionId"};
+        for(String k :params){
+            if(!good.containsKey(k))
+                return getErrResult();
+        }
+//        int count = goodsInfoDao.isHaveGood(good);
+        goodsInfoDao.addCar(good);
+        return getResult();
     }
 }

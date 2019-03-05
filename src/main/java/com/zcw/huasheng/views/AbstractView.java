@@ -10,10 +10,17 @@ import com.alibaba.fastjson.JSONObject;
  */
 public class AbstractView {
 
-    protected JSONObject getResult(Object o){
+    protected JSONObject getResult(Object... o) {
         JSONObject result = new JSONObject();
-        result.put("code",100);
-        result.put("data",o);
+        result.put("code", 100);
+        if (o != null && o.length > 0)
+            result.put("data", o[0]);
+        return result;
+    }
+
+    protected JSONObject getErrResult() {
+        JSONObject result = new JSONObject();
+        result.put("code", 200);
         return result;
     }
 }
