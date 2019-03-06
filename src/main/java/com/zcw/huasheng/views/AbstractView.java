@@ -18,9 +18,11 @@ public class AbstractView {
         return result;
     }
 
-    protected JSONObject getErrResult() {
+    protected JSONObject getErrResult(String ...msg) {
         JSONObject result = new JSONObject();
         result.put("code", 200);
+        if (msg != null && msg.length > 0)
+            result.put("msg", msg[0]);
         return result;
     }
 }

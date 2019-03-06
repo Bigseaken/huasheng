@@ -26,7 +26,7 @@ public class MeView extends AbstractView {
     @PostMapping("addMember")
     public JSONObject addMember(@RequestBody JSONObject member) {
         if(memberDao.getMember(member) !=null)
-            return getErrResult();
+            return getErrResult("手机号码："+member.getString("mobile")+" 已注册了！");
         memberDao.addMember(member);
         return getResult(member);
     }

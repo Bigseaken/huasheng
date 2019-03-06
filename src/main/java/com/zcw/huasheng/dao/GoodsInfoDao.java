@@ -1,10 +1,7 @@
 package com.zcw.huasheng.dao;
 
 import com.alibaba.fastjson.JSONObject;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -38,6 +35,10 @@ public interface GoodsInfoDao {
             "VALUES(#{good.goodId},#{good.amount},#{good.sessionId},1)")
     void addCar(@Param("good") JSONObject good);
 
-    @Select("SELECT count(*) from shop_car where goodId = #{good.goodId} and sessionId = #{good.sessionId}")
-    int isHaveGood(@Param("good")JSONObject good);
+    @Select("SELECT * from shop_car where goodId = #{good.goodId} and sessionId = #{good.sessionId}")
+    JSONObject isHaveGood(@Param("good")JSONObject good);
+
+    @Update("update shop_car set goodId = #{good.goodId} , sessionId = #{good.sessionId} ," +
+            " amount = #{good.amount}")
+    void updateCar(@Param("good")JSONObject good);
 }

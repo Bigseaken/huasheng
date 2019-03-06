@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @CrossOrigin
 @RequestMapping("home")
-@Api(description="首页相关")
+@Api(description = "首页相关")
 public class HomeView extends AbstractView {
     @Autowired
     GoodsInfoDao goodsInfoDao;
@@ -27,7 +27,7 @@ public class HomeView extends AbstractView {
         return getResult(goodsInfoDao.getBanner());
     }
 
-    @ApiOperation(value = "根据id获取资讯",notes = "id=1")
+    @ApiOperation(value = "根据id获取资讯", notes = "id=1")
     @GetMapping("getInformationById")
     public JSONObject getInformationById(Long id) {
         return getResult(goodsInfoDao.getInformationById(id));
@@ -51,22 +51,28 @@ public class HomeView extends AbstractView {
         return getResult(goodsInfoDao.getSponsor());
     }
 
-    @ApiOperation(value = "根据商品idu获取商品详情",notes = "id=1")
+    @ApiOperation(value = "根据商品idu获取商品详情", notes = "id=1")
     @GetMapping("getGoodById")
     public JSONObject getGoodById(Long id) {
         return getResult(goodsInfoDao.getGoodById(id));
     }
 
-    @ApiOperation(value = "添加购物车" ,notes = "{goodId:商品id,amount:数量，sessionId:登陆用户id}")
+    @ApiOperation(value = "添加购物车", notes = "{goodId:商品id,amount:数量，sessionId:登陆用户id}")
     @PostMapping("addCar")
     public JSONObject addCar(@RequestBody JSONObject good) {
         String[] params = new String[]{"goodId", "amount", "sessionId"};
         for (String k : params) {
             if (!good.containsKey(k))
-                return getErrResult();
+                return getErrResult("缺少参数"+k);
         }
-//        int count = goodsInfoDao.isHaveGood(good);
-        goodsInfoDao.addCar(good);
+        JSONObject existGood = goodsInfoDao.isHaveGood(good);
+        if (existGood != null) {
+            long amount = good.getIntValue("amount") + 1;
+            good.put("amount", amount);
+            goodsInfoDao.updateCar(good);
+        } else {
+            goodsInfoDao.addCar(good);
+        }
         return getResult();
     }
 }
