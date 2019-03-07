@@ -15,6 +15,7 @@ public class AbstractView {
         result.put("code", 100);
         if (o != null && o.length > 0)
             result.put("data", o[0]);
+        result.put("msg", "请求成功");
         return result;
     }
 
