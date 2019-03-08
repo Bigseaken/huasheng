@@ -67,7 +67,7 @@ public class HomeView extends AbstractView {
         }
         JSONObject existGood = goodsInfoDao.isHaveGood(good);
         if (existGood != null) {
-            long amount = good.getIntValue("amount") + 1;
+            long amount = good.getIntValue("amount") + existGood.getIntValue("amount");
             good.put("amount", amount);
             good.put("id", existGood.getLong("id"));
             goodsInfoDao.updateCar(good);
