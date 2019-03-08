@@ -39,6 +39,9 @@ public interface GoodsInfoDao {
     JSONObject isHaveGood(@Param("good")JSONObject good);
 
     @Update("update shop_car set goodId = #{good.goodId} , sessionId = #{good.sessionId} ," +
-            " amount = #{good.amount}")
+            " amount = #{good.amount} where id= #{good.id}")
     void updateCar(@Param("good")JSONObject good);
+
+    @Select("SELECT sum(amount) as total from shop_car where sessionId = #{sessionId}")
+    JSONObject getCar(@Param("sessionId") Long sessionId);
 }

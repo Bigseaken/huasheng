@@ -69,10 +69,17 @@ public class HomeView extends AbstractView {
         if (existGood != null) {
             long amount = good.getIntValue("amount") + 1;
             good.put("amount", amount);
+            good.put("id", existGood.getLong("id"));
             goodsInfoDao.updateCar(good);
         } else {
             goodsInfoDao.addCar(good);
         }
         return getResult();
+    }
+
+    @ApiOperation(value = "显示购物车数量",notes = "sessionId=1")
+    @GetMapping("getCar")
+    public JSONObject getCar(Long sessionId){
+        return getResult(goodsInfoDao.getCar(sessionId));
     }
 }
