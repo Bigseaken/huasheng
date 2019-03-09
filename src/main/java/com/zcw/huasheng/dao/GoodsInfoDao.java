@@ -1,6 +1,7 @@
 package com.zcw.huasheng.dao;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zcw.huasheng.entity.One2Many;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -55,4 +56,33 @@ public interface GoodsInfoDao {
 
     @Update("update shop_car set status = 0 where id= #{car.id}")
     void deleteCar(@Param("car") JSONObject carInfo);
+
+    @Select("SELECT gi.name,gi.img,od.amount " +
+            "from  order_detail od LEFT JOIN goods_info gi on od.goodId = gi.id " +
+            "where od.orderId = #{id}")
+    List<JSONObject> orderDetail(@Param("id") Long id);
+
+
+    @Select("SELECT o.id,o.num,o.totalPrice,o.status from `order` o where o.status = #{orderType}" +
+            "and  o.sessionId=#{sessionId}")
+    @Results({
+            @Result(column = "id",property = "id"),
+            @Result(column = "num",property = "num"),
+            @Result(column = "status",property = "status"),
+            @Result(column = "totalPrice",property = "totalPrice"),
+            @Result(property = "list",column = "id",
+            many=@Many(select = "com.zcw.huasheng.dao.GoodsInfoDao.orderDetail")),
+    })
+    List<One2Many> getOrderListByType(@Param("orderType") Integer orderType,@Param("sessionId") Long sessionId);
+
+    @Select("SELECT o.id,o.num,o.totalPrice ,o.status from `order` o where o.sessionId=#{sessionId}")
+    @Results({
+            @Result(column = "id",property = "id"),
+            @Result(column = "num",property = "num"),
+            @Result(column = "status",property = "status"),
+            @Result(column = "totalPrice",property = "totalPrice"),
+            @Result(property = "list",column = "id",
+                    many=@Many(select = "com.zcw.huasheng.dao.GoodsInfoDao.orderDetail")),
+    })
+    List<JSONObject> getOrderList(@Param("sessionId") Long sessionId);
 }

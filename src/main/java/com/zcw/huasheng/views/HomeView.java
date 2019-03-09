@@ -150,4 +150,14 @@ public class HomeView extends AbstractView {
         return getResult();
     }
 
+    @ApiOperation(value = "获取订单信息",notes = "sessionId=1")
+    @GetMapping("getOrderList")
+    public JSONObject getOrderList(@RequestParam(required = false,value = "")Integer orderType,
+                                   Long sessionId){
+        if(orderType == null)
+            return getResult(goodsInfoDao.getOrderList(sessionId));
+        else
+            return getResult(goodsInfoDao.getOrderListByType(orderType,sessionId));
+    }
+
 }
