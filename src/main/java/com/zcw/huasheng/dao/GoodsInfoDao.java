@@ -46,6 +46,13 @@ public interface GoodsInfoDao {
     JSONObject getCar(@Param("sessionId") Long sessionId);
     @Select("SELECT gi.id as goodId,sc.id,sc.amount,gi.`name`,gi.`describe`,gi.price,gi.img " +
             "FROM shop_car sc LEFT JOIN goods_info gi ON gi.id = sc.goodId " +
-            "WHERE sessionId = #{sessionId}")
+            "WHERE sessionId = #{sessionId} and status = 1 ")
     List<JSONObject> getAllCar(@Param("sessionId")Long sessionId);
+
+    @Select("SELECT sc.amount,gi.price,gi.id as goodId,sc.id from shop_car sc " +
+            "LEFT JOIN goods_info gi on sc.goodId = gi.id where sc.id = #{carId} and sc.status = 1")
+    JSONObject getCarById(@Param("carId") Integer carId);
+
+    @Update("update shop_car set status = 0 where id= #{car.id}")
+    void deleteCar(@Param("car") JSONObject carInfo);
 }

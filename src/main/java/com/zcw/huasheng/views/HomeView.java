@@ -1,11 +1,17 @@
 package com.zcw.huasheng.views;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zcw.huasheng.OrderDao;
 import com.zcw.huasheng.dao.GoodsInfoDao;
+import com.zcw.huasheng.utils.OrderNumTool;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 描述:
@@ -20,6 +26,8 @@ import org.springframework.web.bind.annotation.*;
 public class HomeView extends AbstractView {
     @Autowired
     GoodsInfoDao goodsInfoDao;
+    @Autowired
+    OrderDao orderDao;
 
     @ApiOperation("获取banner")
     @GetMapping("getBanner")
@@ -87,6 +95,59 @@ public class HomeView extends AbstractView {
     @GetMapping("getAllCar")
     public JSONObject getAllCar(Long sessionId){
         return getResult(goodsInfoDao.getAllCar(sessionId));
+    }
+
+    @ApiOperation(value = "创建订单",notes = "直接购买：{\"goodId\":1,\"amount\":10,\"type\":1,\"sessionId\":52}" +
+            "购物车下单{\"carIds\":[21,22,23],\"type\":2,\"sessionId\":52}")
+    @PostMapping("addOrder")
+    public JSONObject addOrder(@RequestBody JSONObject params) {
+        params.put("date",new Date());
+        int type = (int) params.get("type");
+        //直接购买
+        if(type == 1){
+            int amount = params.getIntValue("amount");
+            JSONObject good = goodsInfoDao.getGoodById(params.getLong("goodId"));
+            Integer price = 0;
+            if (good != null)
+                price = good.getInteger("price");
+            params.put("num", OrderNumTool.getNum());
+            params.put("status", 1);
+            params.put("totalPrice", price * amount);
+            orderDao.addOrder(params);
+
+            //添加订单详情
+            orderDao.addOrderDetail(params);
+        //购物车购买
+        }else {
+            List<Integer> carIds = (List<Integer>) params.get("carIds");
+            List<JSONObject> carList = new ArrayList<>();
+            Integer totalPrice = 0;
+            for(Integer carId:carIds){
+                JSONObject carInfo = goodsInfoDao.getCarById(carId);
+                if(carId!=null){
+                    carList.add(carInfo);
+                    int price = carInfo.getIntValue("price");
+                    int amount  = carInfo.getIntValue("amount");
+                    totalPrice += price*amount;
+                    //逻辑删除删除购物车
+                    goodsInfoDao.deleteCar(carInfo);
+                }
+            }
+            params.put("status",1);
+            params.put("num", OrderNumTool.getNum());
+            params.put("totalPrice", totalPrice);
+            orderDao.addOrder(params);
+
+            for(JSONObject car :carList){
+                JSONObject orderDetail = new JSONObject();
+                orderDetail.put("orderId",params.getLong("orderId"));
+                orderDetail.put("amount",car.getIntValue("amount"));
+                orderDetail.put("goodId",car.getLongValue("goodId"));
+                orderDao.addOrderDetail(orderDetail);
+
+            }
+        }
+        return getResult();
     }
 
 }
