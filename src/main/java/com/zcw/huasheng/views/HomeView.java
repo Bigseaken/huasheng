@@ -88,4 +88,5 @@ public class HomeView extends AbstractView {
     public JSONObject getAllCar(Long sessionId){
         return getResult(goodsInfoDao.getAllCar(sessionId));
     }
+
 }
