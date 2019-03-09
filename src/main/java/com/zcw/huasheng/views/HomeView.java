@@ -150,7 +150,7 @@ public class HomeView extends AbstractView {
         return getResult();
     }
 
-    @ApiOperation(value = "获取订单信息",notes = "sessionId=1")
+    @ApiOperation(value = "获取订单信息",notes = "orderType=1:待支付 2:代发货 3:已发货 不传查询全部订单 &sessionId=1")
     @GetMapping("getOrderList")
     public JSONObject getOrderList(@RequestParam(required = false,value = "")Integer orderType,
                                    Long sessionId){
