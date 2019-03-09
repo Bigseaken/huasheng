@@ -44,4 +44,8 @@ public interface GoodsInfoDao {
 
     @Select("SELECT sum(amount) as total from shop_car where sessionId = #{sessionId}")
     JSONObject getCar(@Param("sessionId") Long sessionId);
+    @Select("SELECT sc.id,sc.amount,gi.`name`,gi.`describe`,gi.price,gi.img " +
+            "FROM shop_car sc LEFT JOIN goods_info gi ON gi.id = sc.goodId " +
+            "WHERE sessionId = #{sessionId}")
+    List<JSONObject> getAllCar(@Param("sessionId")Long sessionId);
 }

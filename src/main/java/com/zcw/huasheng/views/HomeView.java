@@ -82,4 +82,10 @@ public class HomeView extends AbstractView {
     public JSONObject getCar(Long sessionId){
         return getResult(goodsInfoDao.getCar(sessionId));
     }
+
+    @ApiOperation(value = "显示购物车信息",notes = "sessionId=1")
+    @GetMapping("getAllCar")
+    public JSONObject getAllCar(Long sessionId){
+        return getResult(goodsInfoDao.getAllCar(sessionId));
+    }
 }
