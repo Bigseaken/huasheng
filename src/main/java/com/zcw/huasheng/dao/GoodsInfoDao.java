@@ -36,14 +36,14 @@ public interface GoodsInfoDao {
             "VALUES(#{good.goodId},#{good.amount},#{good.sessionId},1)")
     void addCar(@Param("good") JSONObject good);
 
-    @Select("SELECT * from shop_car where goodId = #{good.goodId} and sessionId = #{good.sessionId}")
+    @Select("SELECT * from shop_car where goodId = #{good.goodId} and sessionId = #{good.sessionId} and status = 1")
     JSONObject isHaveGood(@Param("good")JSONObject good);
 
     @Update("update shop_car set goodId = #{good.goodId} , sessionId = #{good.sessionId} ," +
             " amount = #{good.amount} where id= #{good.id}")
     void updateCar(@Param("good")JSONObject good);
 
-    @Select("SELECT sum(amount) as total from shop_car where sessionId = #{sessionId}")
+    @Select("SELECT sum(amount) as total from shop_car where sessionId = #{sessionId} and status = 1")
     JSONObject getCar(@Param("sessionId") Long sessionId);
     @Select("SELECT gi.id as goodId,sc.id,sc.amount,gi.`name`,gi.`describe`,gi.price,gi.img " +
             "FROM shop_car sc LEFT JOIN goods_info gi ON gi.id = sc.goodId " +
