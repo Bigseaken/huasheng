@@ -2,6 +2,7 @@ package com.zcw.huasheng.entity;
 
 import netscape.javascript.JSObject;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -22,6 +23,7 @@ public class One2Many {
 
     private List<JSObject> list;
 
+    private String date;
     public List<JSObject> getList() {
         return list;
     }
@@ -60,5 +62,13 @@ public class One2Many {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }

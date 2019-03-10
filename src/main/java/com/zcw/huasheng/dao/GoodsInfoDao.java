@@ -57,30 +57,32 @@ public interface GoodsInfoDao {
     @Update("update shop_car set status = 0 where id= #{car.id}")
     void deleteCar(@Param("car") JSONObject carInfo);
 
-    @Select("SELECT gi.name,gi.img,od.amount " +
+    @Select("SELECT gi.name,gi.img,od.amount,gi.price  " +
             "from  order_detail od LEFT JOIN goods_info gi on od.goodId = gi.id " +
             "where od.orderId = #{id}")
     List<JSONObject> orderDetail(@Param("id") Long id);
 
 
-    @Select("SELECT o.id,o.num,o.totalPrice,o.status from `order` o where o.status = #{status} " +
+    @Select("SELECT o.id,o.num,o.totalPrice,o.status ,o.date from `order` o where o.status = #{status} " +
             "and  o.sessionId=#{sessionId}")
     @Results({
             @Result(column = "id",property = "id"),
             @Result(column = "num",property = "num"),
             @Result(column = "status",property = "status"),
             @Result(column = "totalPrice",property = "totalPrice"),
+            @Result(column = "date",property = "date"),
             @Result(property = "list",column = "id",
             many=@Many(select = "com.zcw.huasheng.dao.GoodsInfoDao.orderDetail")),
     })
     List<One2Many> getOrderListByType(@Param("status") Integer status,@Param("sessionId") Long sessionId);
 
-    @Select("SELECT o.id,o.num,o.totalPrice ,o.status from `order` o where o.sessionId=#{sessionId}")
+    @Select("SELECT o.id,o.num,o.totalPrice ,o.status ,o.date from `order` o where o.sessionId=#{sessionId}")
     @Results({
             @Result(column = "id",property = "id"),
             @Result(column = "num",property = "num"),
             @Result(column = "status",property = "status"),
             @Result(column = "totalPrice",property = "totalPrice"),
+            @Result(column = "date",property = "date"),
             @Result(property = "list",column = "id",
                     many=@Many(select = "com.zcw.huasheng.dao.GoodsInfoDao.orderDetail")),
     })
