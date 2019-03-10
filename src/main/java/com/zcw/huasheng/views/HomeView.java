@@ -101,6 +101,16 @@ public class HomeView extends AbstractView {
             "购物车下单{\"carIds\":[21,22,23],\"type\":2,\"sessionId\":52}")
     @PostMapping("addOrder")
     public JSONObject addOrder(@RequestBody JSONObject params) {
+        if(!params.containsKey("type")||params.containsKey("sessionId"))
+            return getErrResult("参数不正确");
+        if(params.getIntValue("type") ==1){
+            if(!params.containsKey("goodId"))
+                return getErrResult("没有商品id");
+        }else {
+            if(!params.containsKey("carIds"))
+                return getErrResult("没有购物车信息");
+        }
+
         params.put("date",new Date());
         int type = (int) params.get("type");
         //直接购买
@@ -150,7 +160,7 @@ public class HomeView extends AbstractView {
         return getResult();
     }
 
-    @ApiOperation(value = "获取订单信息",notes = "orderType=1:待支付 2:代发货 3:已发货 不传查询全部订单 &sessionId=1")
+    @ApiOperation(value = "获取订单信息",notes = "status=1:待支付 2:代发货 3:已发货 不传查询全部订单 &sessionId=1")
     @GetMapping("getOrderList")
     public JSONObject getOrderList(@RequestParam(required = false,value = "")Integer orderType,
                                    Long sessionId){
