@@ -3,6 +3,7 @@ package com.zcw.huasheng.views;
 import com.alibaba.fastjson.JSONObject;
 import com.zcw.huasheng.OrderDao;
 import com.zcw.huasheng.dao.GoodsInfoDao;
+import com.zcw.huasheng.entity.GoodOne2Many;
 import com.zcw.huasheng.utils.OrderNumTool;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -59,7 +60,7 @@ public class HomeView extends AbstractView {
         return getResult(goodsInfoDao.getSponsor());
     }
 
-    @ApiOperation(value = "根据商品idu获取商品详情", notes = "id=1")
+    @ApiOperation(value = "根据商品id获取商品详情", notes = "id=1")
     @GetMapping("getGoodById")
     public JSONObject getGoodById(Long id) {
         return getResult(goodsInfoDao.getGoodById(id));
@@ -116,10 +117,10 @@ public class HomeView extends AbstractView {
         //直接购买
         if(type == 1){
             int amount = params.getIntValue("amount");
-            JSONObject good = goodsInfoDao.getGoodById(params.getLong("goodId"));
-            Integer price = 0;
+            GoodOne2Many good = goodsInfoDao.getGoodById(params.getLong("goodId"));
+            Long price = 0l;
             if (good != null)
-                price = good.getInteger("price");
+                price = good.getPrice();
             params.put("num", OrderNumTool.getNum());
             params.put("status", 1);
             params.put("totalPrice", price * amount);

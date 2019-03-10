@@ -1,6 +1,7 @@
 package com.zcw.huasheng.dao;
 
 import com.alibaba.fastjson.JSONObject;
+import com.zcw.huasheng.entity.GoodOne2Many;
 import com.zcw.huasheng.entity.One2Many;
 import org.apache.ibatis.annotations.*;
 
@@ -29,8 +30,23 @@ public interface GoodsInfoDao {
 
     @Select("SELECT * from banner where type=2 LIMIT 1")
     JSONObject getSponsor();
+
+
+    @Select("SELECT * from category where goodId = #{goodId}")
+    JSONObject getCategory(@Param("goodId")Long goodId);
+
     @Select("SELECT * from goods_info where id = #{id}")
-    JSONObject getGoodById(@Param("id")Long id);
+    @Results({
+            @Result(column = "id", property = "id"),
+            @Result(column = "name", property = "name"),
+            @Result(column = "describe", property = "describe"),
+            @Result(column = "price", property = "price"),
+            @Result(column = "img", property = "img"),
+            @Result(column = "type", property = "type"),
+            @Result(property = "categorys", column = "id"
+                    , many = @Many(select = "com.zcw.huasheng.dao.GoodsInfoDao.getCategory"))
+    })
+    GoodOne2Many getGoodById(@Param("id")Long id);
 
     @Insert("INSERT into shop_car(goodId,amount,sessionId,status) " +
             "VALUES(#{good.goodId},#{good.amount},#{good.sessionId},1)")
@@ -57,7 +73,7 @@ public interface GoodsInfoDao {
     @Update("update shop_car set status = 0 where id= #{car.id}")
     void deleteCar(@Param("car") JSONObject carInfo);
 
-    @Select("SELECT gi.name,gi.img,od.amount,gi.price  " +
+    @Select("SELECT gi.name,gi.img,od.amount,gi.price,gi.describe " +
             "from  order_detail od LEFT JOIN goods_info gi on od.goodId = gi.id " +
             "where od.orderId = #{id}")
     List<JSONObject> orderDetail(@Param("id") Long id);
