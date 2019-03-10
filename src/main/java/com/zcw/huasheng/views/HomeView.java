@@ -101,13 +101,13 @@ public class HomeView extends AbstractView {
             "购物车下单{\"carIds\":[21,22,23],\"type\":2,\"sessionId\":52}")
     @PostMapping("addOrder")
     public JSONObject addOrder(@RequestBody JSONObject params) {
-        if(!params.containsKey("type")||params.containsKey("sessionId"))
+        if (!params.containsKey("type") || !params.containsKey("sessionId"))
             return getErrResult("参数不正确");
-        if(params.getIntValue("type") ==1){
-            if(!params.containsKey("goodId"))
+        if (params.getIntValue("type") == 1) {
+            if (!params.containsKey("goodId"))
                 return getErrResult("没有商品id");
-        }else {
-            if(!params.containsKey("carIds"))
+        } else {
+            if (!params.containsKey("carIds"))
                 return getErrResult("没有购物车信息");
         }
 
