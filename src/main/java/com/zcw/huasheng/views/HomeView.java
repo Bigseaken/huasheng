@@ -162,12 +162,12 @@ public class HomeView extends AbstractView {
 
     @ApiOperation(value = "获取订单信息",notes = "status=1:待支付 2:代发货 3:已发货 不传查询全部订单 &sessionId=1")
     @GetMapping("getOrderList")
-    public JSONObject getOrderList(@RequestParam(required = false,value = "")Integer orderType,
+    public JSONObject getOrderList(@RequestParam(required = false,value = "")Integer status,
                                    Long sessionId){
-        if(orderType == null)
+        if(status == null)
             return getResult(goodsInfoDao.getOrderList(sessionId));
         else
-            return getResult(goodsInfoDao.getOrderListByType(orderType,sessionId));
+            return getResult(goodsInfoDao.getOrderListByType(status,sessionId));
     }
 
 }

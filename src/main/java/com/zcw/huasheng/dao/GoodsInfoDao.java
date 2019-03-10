@@ -63,7 +63,7 @@ public interface GoodsInfoDao {
     List<JSONObject> orderDetail(@Param("id") Long id);
 
 
-    @Select("SELECT o.id,o.num,o.totalPrice,o.status from `order` o where o.status = #{orderType}" +
+    @Select("SELECT o.id,o.num,o.totalPrice,o.status from `order` o where o.status = #{status} " +
             "and  o.sessionId=#{sessionId}")
     @Results({
             @Result(column = "id",property = "id"),
@@ -73,7 +73,7 @@ public interface GoodsInfoDao {
             @Result(property = "list",column = "id",
             many=@Many(select = "com.zcw.huasheng.dao.GoodsInfoDao.orderDetail")),
     })
-    List<One2Many> getOrderListByType(@Param("orderType") Integer orderType,@Param("sessionId") Long sessionId);
+    List<One2Many> getOrderListByType(@Param("status") Integer status,@Param("sessionId") Long sessionId);
 
     @Select("SELECT o.id,o.num,o.totalPrice ,o.status from `order` o where o.sessionId=#{sessionId}")
     @Results({
