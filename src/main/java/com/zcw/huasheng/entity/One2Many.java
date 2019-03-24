@@ -1,6 +1,6 @@
 package com.zcw.huasheng.entity;
 
-import netscape.javascript.JSObject;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.Date;
 import java.util.List;
@@ -21,14 +21,14 @@ public class One2Many {
 
     private Integer status;
 
-    private List<JSObject> list;
+    private List<JSONObject> list;
 
     private String date;
-    public List<JSObject> getList() {
+    public List<JSONObject> getList() {
         return list;
     }
 
-    public void setList(List<JSObject> list) {
+    public void setList(List<JSONObject> list) {
         this.list = list;
     }
 
