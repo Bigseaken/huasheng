@@ -2,7 +2,7 @@ package com.zcw.huasheng.entity;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import netscape.javascript.JSObject;
+import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class GoodOne2Many  {
     private Long price;
     private String img;
     private Integer type;
-    private List<JSObject> categorys;
+    private List<JSONObject> categorys;
 
     public Long getId() {
         return id;
@@ -69,11 +69,11 @@ public class GoodOne2Many  {
         this.type = type;
     }
 
-    public List<JSObject> getCategorys() {
+    public List<JSONObject> getCategorys() {
         return categorys;
     }
 
-    public void setCategorys(List<JSObject> categorys) {
+    public void setCategorys(List<JSONObject> categorys) {
         this.categorys = categorys;
     }
 }
