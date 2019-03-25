@@ -38,7 +38,10 @@ public class MeView extends AbstractView {
             JSONObject params = new JSONObject();
             params.put("mobile", mobile);
             params.put("password", password);
-            return getResult(memberDao.getMember(params));
+            if(memberDao.getMember(params)!=null)
+                return getResult(memberDao.getMember(params));
+            else
+                return  getErrResult("密码错误！");
         }
         return getResult(memberDao.getMemberByMobile(mobile));
     }
