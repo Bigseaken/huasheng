@@ -11,11 +11,11 @@ import org.apache.ibatis.annotations.*;
  */
 @Mapper
 public interface MemberDao {
-    @Insert("insert into member(mobile) value(#{member.mobile})")
+    @Insert("insert into member(mobile,password) value(#{member.mobile},#{member.password})")
     @Options(useGeneratedKeys = true, keyProperty = "member.id")
     int addMember(@Param("member") JSONObject member);
 
-    @Select("select * from member where mobile = #{member.mobile}")
+    @Select("select * from member where mobile = #{member.mobile} and password = #{member.password} ")
     JSONObject getMember(@Param("member") JSONObject member);
 
     @Select("select * from member where mobile = #{mobile}")
